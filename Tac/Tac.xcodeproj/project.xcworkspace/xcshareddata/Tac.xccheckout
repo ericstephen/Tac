@@ -5,36 +5,36 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>02C08A64-24BB-4BB6-8E60-60F0C0488D28</string>
+	<string>E81DEA7C-966B-459B-BDF6-4F561110F56D</string>
 	<key>IDESourceControlProjectName</key>
 	<string>Tac</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>CD058A18-623F-4BDC-9B74-9357A0E20F92</key>
-		<string>https://github.com/ericstephen/iOS-TrainingApps.git</string>
+		<key>FB7066DF3042AD4170E82D95BB323D04724DDE33</key>
+		<string>https://github.com/ericstephen/Tac.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>Tac/Tac.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>CD058A18-623F-4BDC-9B74-9357A0E20F92</key>
+		<key>FB7066DF3042AD4170E82D95BB323D04724DDE33</key>
 		<string>../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/ericstephen/iOS-TrainingApps.git</string>
+	<string>https://github.com/ericstephen/Tac.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>CD058A18-623F-4BDC-9B74-9357A0E20F92</string>
+	<string>FB7066DF3042AD4170E82D95BB323D04724DDE33</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>CD058A18-623F-4BDC-9B74-9357A0E20F92</string>
+			<string>FB7066DF3042AD4170E82D95BB323D04724DDE33</string>
 			<key>IDESourceControlWCCName</key>
-			<string>iOS-TrainingApps</string>
+			<string>Tac</string>
 		</dict>
 	</array>
 </dict>
