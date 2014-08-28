@@ -111,11 +111,4 @@
     }
 }
 
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
-{
-    for (TTTTouchSpot * spot in [TTTGameData mainData].spots) {
-        spot.player = 0;
-    }
-}
-
 @end
