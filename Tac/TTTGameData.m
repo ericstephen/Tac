@@ -8,10 +8,13 @@
 
 #import "TTTGameData.h"
 #import "TTTTouchSpot.h"
+#import "TTTScoreView.h"
+
 
 @implementation TTTGameData
 {
     NSArray * possibilities;
+    TTTScoreView * scoreView;
 }
 
 + (TTTGameData *)mainData
@@ -46,6 +49,10 @@
                           @[@0,@4,@8],
                           @[@2,@4,@6]
                           ];
+        
+        _playerWins = 0;
+        _playerLosses = 0;
+        _playerDraws = 0;
     }
     return self;
 }
@@ -62,6 +69,21 @@
 
 - (void)robotChooseSpot
 {
+    
+    if ([self findWinningSpot])
+    {
+        self.player1Turn = !self.player1Turn;
+        [self checkForWinner];
+        return;
+    }
+    
+    if ([self findBlockingSpot])
+    {
+        self.player1Turn = !self.player1Turn;
+        [self checkForWinner];
+        return;
+    }
+    
     for (TTTTouchSpot * spot in self.spots)
     {
         if (spot.player == 0)
@@ -83,30 +105,16 @@
 {
     for (NSArray * possibility in possibilities)
     {
-        if([self checkForSpotWithSpots:possibility]) return YES;
-
+        if([self checkForSpotWithSpots:possibility player:2]) return YES;
+        
         NSArray * possibility2 = @[possibility[2],possibility[0],possibility[1]];
-        if([self checkForSpotWithSpots:possibility2]) return YES;
+        if([self checkForSpotWithSpots:possibility2 player:2]) return YES;
         
         NSArray * possibility3 = @[possibility[1],possibility[2],possibility[0]];
-        if([self checkForSpotWithSpots:possibility3]) return YES;
+        if([self checkForSpotWithSpots:possibility3 player:2]) return YES;
     }
     return NO;
     
-}
-
--(BOOL)checkForSpotWithSpots:(NSArray *)spots
-{
-    TTTTouchSpot * spot0 = self.spots[[spots [ 0 ] intValue]];
-    TTTTouchSpot * spot1 = self.spots[[spots [ 1 ] intValue]];
-    TTTTouchSpot * spot2 = self.spots[[spots [ 2 ] intValue]];
-    
-    if (spot0.player == 2 && spot1.player == 2 && spot2.player == 0)
-    {
-        spot2.player = 2;
-        return YES;
-    }
-    return NO;
 }
 
 
@@ -114,31 +122,37 @@
 {
     for (NSArray * possibility in possibilities)
     {
-//        TTTTouchSpot * spot0 = self.spots[[possibility [ 0 ] intValue]];
-//        TTTTouchSpot * spot1 = self.spots[[possibility [ 1 ] intValue]];
-//        TTTTouchSpot * spot2 = self.spots[[possibility [ 2 ] intValue]];
+        if([self checkForSpotWithSpots:possibility player:1]) return YES;
+        
+        NSArray * possibility2 = @[possibility[2],possibility[0],possibility[1]];
+        if([self checkForSpotWithSpots:possibility2 player:1]) return YES;
+        
+        NSArray * possibility3 = @[possibility[1],possibility[2],possibility[0]];
+        if([self checkForSpotWithSpots:possibility3 player:1]) return YES;
     }
     return NO;
 }
 
-
--(BOOL)findRandomSpot
+-(BOOL)checkForSpotWithSpots:(NSArray *)spots player:(int)player
 {
-    for (NSArray * possibility in possibilities)
+    TTTTouchSpot * spot0 = self.spots[[spots [ 0 ] intValue]];
+    TTTTouchSpot * spot1 = self.spots[[spots [ 1 ] intValue]];
+    TTTTouchSpot * spot2 = self.spots[[spots [ 2 ] intValue]];
+    
+    if (spot0.player == player && spot1.player == player && spot2.player == 0)
     {
-//        TTTTouchSpot * spot0 = self.spots[[possibility [ 0 ] intValue]];
-//        TTTTouchSpot * spot1 = self.spots[[possibility [ 1 ] intValue]];
-//        TTTTouchSpot * spot2 = self.spots[[possibility [ 2 ] intValue]];
+        spot2.player = 2;
+        return YES;
     }
     return NO;
 }
-
 
 -(void)checkForWinner
 {
-
+    
     BOOL winner = NO;
     
+    // Just to see if there is a winner
     for (NSArray * possibility in possibilities)
     {
         TTTTouchSpot * spot0 = self.spots[[possibility [ 0 ] intValue]];
@@ -150,12 +164,23 @@
             winner = YES;
             NSLog (@"player %d won", spot0.player);
             
-            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Winner" message:[NSString stringWithFormat:@"Player %d Won",spot0.player] delegate:self cancelButtonTitle:@"Start Over" otherButtonTitles: nil];
-            
-            [alert show];
+            if (spot0.player == 1)
+            {
+                [self showCurrentGameResults:@"you win!"];
+
+                _playerWins++;
+                
+            } else {
+                
+                [self showCurrentGameResults:@"you lose!"];
+
+                _playerLosses++;
+            }
+            return;
         }
     }
     
+    // Ok so if we do NOT have a winner, then check if it's a draw (no more spots to click)
     int emptySpots = 0;
     
     for (TTTTouchSpot * spot in self.spots)
@@ -164,19 +189,28 @@
     
     if (emptySpots == 0 && !winner)
     {
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Draw" message:@"No Player Won" delegate:self cancelButtonTitle:@"Start Over" otherButtonTitles: nil];
+        [self showCurrentGameResults:@"draw!"];
         
-        [alert show];
+        _playerDraws++;
         
     }
 }
-    - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
-    {
-        self.player1Turn = YES;
-        
-        for (TTTTouchSpot * spot in self.spots) {
-            spot.player = 0;
-        }
+
+
+- (void)showCurrentGameResults:(NSString *)message
+{
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"Completed Game" object:message];
+
+}
+
+- (void)resetGame
+{
+    self.player1Turn = YES;
+    
+    for (TTTTouchSpot * spot in self.spots) {
+        spot.player = 0;
+    }
 }
 
 @end

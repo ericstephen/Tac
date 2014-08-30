@@ -14,8 +14,16 @@
 
 -(void)checkForWinner;
 
+- (void)resetGame;
+
 @property (nonatomic) NSMutableArray * spots;
 
 @property (nonatomic) BOOL player1Turn;
+
+@property (nonatomic, readonly) int playerWins;
+
+@property (nonatomic, readonly) int playerLosses;
+
+@property (nonatomic, readonly) int playerDraws;
 
 @end
